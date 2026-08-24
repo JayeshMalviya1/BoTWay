@@ -1,0 +1,23 @@
+// Botway Core - Prisma Schema
+// Phase 0: Database connection only — no application models yet.
+//
+// Future models (to be added in later phases):
+//   - Profile
+//   - Organization
+//   - OrganizationMember
+//   - Chatbot
+//   - ChatbotConfig
+//   - KnowledgeBase
+//   - Document
+//   - Conversation
+//   - Message
+//   - Deployment
+//   - Usage
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}

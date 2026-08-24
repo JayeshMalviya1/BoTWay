@@ -1,0 +1,41 @@
+name: Botway Deployment Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  # ── Deploy Backend to Railway ───────────────────────────────
+  deploy-backend:
+    name: Deploy Backend to Railway
+    runs-on: ubuntu-latest
+    if: github.repository_owner != ''
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Railway
+        uses: bervProject/railway-deploy@main
+        continue-on-error: true
+        with:
+          railway_token: ${{ secrets.RAILWAY_TOKEN }}
+          service: "botway-core"
+
+  # ── Deploy Frontend to Vercel ───────────────────────────────
+  deploy-frontend:
+    name: Deploy Frontend to Vercel
+    runs-on: ubuntu-latest
+    if: github.repository_owner != ''
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel Action
+        uses: amondnet/vercel-action@v25
+        continue-on-error: true
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./frontend
+          vercel-args: "--prod"
